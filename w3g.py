@@ -120,14 +120,18 @@ def b2f(b):
     return struct.unpack('<f', b)[0]
 
 
-class Player(namedtuple('Player', ['id', 'name', 'race', 'ishost',
-                                   'runtime', 'raw', 'size'])):
-    def __new__(cls, id=-1, name='', race='', ishost=False, runtime=-1,
-                raw=b'', size=0):
-        self = super(Player, cls).__new__(cls, id=id, name=name, race=race,
-                                          ishost=ishost, runtime=runtime, raw=raw,
-                                          size=size)
-        return self
+class Player:
+    def __init__(self, id=-1, name='', race='', ishost=False, runtime=-1, raw=b'', size=0, eff_actions=0, actions=0) -> None:
+        self.id = id
+        self.name = name
+        self.race = race
+        self.ishost = ishost
+        self.runtime = runtime
+        self.raw = raw
+        self.size = size
+        # self.eff_actions = eff_actions
+        # self.actions = actions
+        # self.gaming_time = 0
 
     @classmethod
     def from_raw(cls, data):
@@ -153,6 +157,16 @@ class Player(namedtuple('Player', ['id', 'name', 'race', 'ishost',
         kw['raw'] = data[:n]
         return cls(**kw)
 
+    # @property
+    # def epm(self):
+    #     return round(self.eff_actions / self.gaming_time, 2)
+
+    # @property   
+    # def apm(self):
+    #     return round(self.actions / self.gaming_time, 2)
+
+    def __str__(self) -> str:
+        return f"{self.name}, id: {self.id}"
 
 class ReforgedPlayerMetadata(namedtuple('ReforgedPlayerMetadata',
                                         ['player_id', 'battle_tag', 'clan', 'raw'])):
@@ -1551,20 +1565,16 @@ class File(object):
             return True
         return False
 
-    def print_apm(self):
-        acts = {p.id: 0 for p in self.players}
-        for e in self.events:
-            if e.apm:
-                acts[e.player_id] += 1
-        mins = self.clock / (60 * 1000.0)
-        m = "Actions per minute over {0:.3} min".format(mins)
-        print('-' * len(m))
-        print(m)
-        for pid, act in sorted(acts.items()):
-            if act == 0:
-                continue
-            print("  {0}: {1:.5}".format(self.player_name(pid), act/mins))
+    # def print_apm(self):
+    #     for player in self.players:
+    #         if player.actions != 0:
+    #             print(f"{player.name}: {player.apm}")
 
+    # def print_epm(self):
+    #     for player in self.players:
+    #         if player.eff_actions != 0:
+    #             print(f"{player.name}: {player.epm}")
+    
     def timeseries_actions(self):
         """Returns timeseries of cummulative number of actions, as measured
         by actions per minute.
@@ -1635,15 +1645,13 @@ class File(object):
 
 def main():
     replay_path = ""
+
     f = File(replay_path)
 
     for event in f.events:
         print(event)
 
-    f.print_apm()
-
     print(f.player_count)
-    print(f.players)
 
     print('-' * 10)
     print('The winner is {0}'.format(f.player_name(f.winner())))
