@@ -1184,7 +1184,7 @@ ACTIONS_GT_1_14B = {a.id[1]: a for a in _locs.values() if hasattr(a, 'id') and
 del _locs
 
 
-class File(object):
+class W3gFile(object):
     """A class that represents w3g files.
 
     Attributes
@@ -1192,16 +1192,21 @@ class File(object):
     replay_length : game play time in ms
     """
 
-    def __init__(self, f):
+    def __init__(self, f: str):
         """Parameters
         ----------
         f : file handle or str of path name
         """
         # init
         opened_here = False
+        self.is_w3g = False
+        self.is_w3g = str(f).endswith(".w3g")
+        
         if isinstance(f, str):
+            
             opened_here = True
             f = io.open(f, 'rb')
+
         self.f = f
         self.loc = 0
 
@@ -1240,6 +1245,12 @@ class File(object):
     def mapname(self):
         return self.map_name
 
+    @property
+    def active_players(self):
+        # innefficient
+        sr_players_id = {sr.player_id for sr in self.slot_records if sr.team < 12 and sr.player_id > 0}
+        return [x for x in self.players if x.id in sr_players_id]
+        
     def _read_header(self):
         f = self.f
         self.loc = 28
@@ -1646,7 +1657,7 @@ class File(object):
 def main():
     replay_path = ""
 
-    f = File(replay_path)
+    f = W3gFile(replay_path)
 
     for event in f.events:
         print(event)

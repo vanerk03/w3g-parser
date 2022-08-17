@@ -1,3 +1,49 @@
-### Remove print_apm() from w3g.py
+# Changelog
 
-### Fix eapm function in Eapm.py (not it returns active players, observers are excluded)
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog],
+and this project adheres to [Semantic Versioning].
+
+## [Unreleased]
+
+- /
+
+## [0.0.2] - 2022-08-17
+
+### Added
+- analyzer.py
+- ToDo.MD file created
+- get_mmr to receive player's mmr
+- active_players property to W3gFile
+
+### Changed
+- Remove print_apm() from w3g.py
+- File from w3g.py renamed to W3gFile to avoid ambiguity
+
+### Fixed
+- eapm function in Eapm.py (not it returns active players, observers are excluded)
+
+## [0.0.1] - 2022-08-17
+
+- initial release
+
+<!-- Links -->
+[keep a changelog]: https://keepachangelog.com/en/1.0.0/
+[semantic versioning]: https://semver.org/spec/v2.0.0.html
+
+<!-- Versions -->
+[unreleased]: https://github.com/Author/Repository/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/Author/Repository/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/Author/Repository/releases/tag/v0.0.1
+# Change Log 
+All notable changes to this project will be documented in this file.
+
+### Added
+
+### Fixed
+
+### Changed
+
+
+[1.0.1]

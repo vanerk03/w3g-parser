@@ -1,10 +1,10 @@
 from collections import namedtuple
-from w3g import File, AbilityPositionObject
+from w3g import W3gFile, AbilityPositionObject
 
-def eapm(f: File) -> list[tuple[str, int, int, float]]:
+def eapm(f: W3gFile) -> list[tuple[str, int, int, float]]:
     """
     Args:
-        f (File): file to analyze
+        f (W3gFile): file to analyze
 
     Returns:
         list[tuple[str, int, int, float]]
@@ -46,7 +46,7 @@ def eapm(f: File) -> list[tuple[str, int, int, float]]:
 
 def main():
     replay_path = ""
-    f = File(replay_path)
+    f = W3gFile(replay_path)
     for x in eapm(f):
         print(x)
 
